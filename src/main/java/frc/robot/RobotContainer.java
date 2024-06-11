@@ -10,8 +10,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.XRPArm;
 import frc.robot.subsystems.XRPDrivetrain;
+import frc.robot.subsystems.XRPUltrasound;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtendArm;
+import frc.robot.commands.MoveArm;
+import frc.robot.commands.ResetArm;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -25,15 +30,18 @@ import frc.robot.commands.ExampleCommand;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// subsystems
-	private final XRPDrivetrain m_xrpDrivetrain = new XRPDrivetrain();
+	public static final XRPDrivetrain m_xrpDrivetrain = new XRPDrivetrain();
+	public static final XRPUltrasound m_xrpUltrasound = new XRPUltrasound();
+	public static final XRPArm m_xrpArm = new XRPArm();
 
 	// commands
 	private final ExampleCommand m_autoCommand = new ExampleCommand(m_xrpDrivetrain);
 
 	// controls
 	public static final CommandXboxController m_driverController = new CommandXboxController(0);
-	private static final Trigger t_testPress = m_driverController.a();
 
+	private final Trigger t_scanObjectDistance = m_driverController.a();
+	private final Trigger t_moveArm = m_driverController.leftBumper(); 
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -53,7 +61,12 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		t_testPress.whileTrue(new InstantCommand(() -> System.out.println("A button pressed")));
+		// t_scanObjectDistance.whileTrue();
+		t_moveArm.whileTrue(new MoveArm());
+	}
+
+	public void controlBot() {
+		m_xrpDrivetrain.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getRightX());
 	}
 
 	/**

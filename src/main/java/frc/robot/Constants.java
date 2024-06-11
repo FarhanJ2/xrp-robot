@@ -17,4 +17,12 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class ArmConstants {
+        public static final int kServoPort = 4;
+    }
+    
+    public static final class UltrasonicConstants {
+        public static final int kUltrasonicPingPort = 0;
+        public static final int kUltrasonicEchoPort = 1;
+    }
 }
