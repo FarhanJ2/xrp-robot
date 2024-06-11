@@ -4,19 +4,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.XRPArm;
 import frc.robot.subsystems.XRPDrivetrain;
 import frc.robot.subsystems.XRPUltrasound;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExtendArm;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.ResetArm;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -28,14 +25,13 @@ import frc.robot.commands.ResetArm;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-	// The robot's subsystems and commands are defined here...
 	// subsystems
 	public static final XRPDrivetrain m_xrpDrivetrain = new XRPDrivetrain();
 	public static final XRPUltrasound m_xrpUltrasound = new XRPUltrasound();
 	public static final XRPArm m_xrpArm = new XRPArm();
 
 	// commands
-	private final ExampleCommand m_autoCommand = new ExampleCommand(m_xrpDrivetrain);
+	private final ExampleCommand m_autoCommand = new ExampleCommand();
 
 	// controls
 	public static final CommandXboxController m_driverController = new CommandXboxController(0);
@@ -61,8 +57,10 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		// t_scanObjectDistance.whileTrue();
 		t_moveArm.whileTrue(new MoveArm());
+		t_scanObjectDistance.whileTrue(new InstantCommand(() -> {
+			System.out.println("Object Distance: " + m_xrpUltrasound.getDistance());
+		}));
 	}
 
 	public void controlBot() {
