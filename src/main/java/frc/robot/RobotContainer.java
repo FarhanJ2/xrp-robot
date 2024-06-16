@@ -37,7 +37,7 @@ public class RobotContainer {
 	public static final CommandXboxController m_driverController = new CommandXboxController(0);
 
 	private final Trigger t_scanObjectDistance = m_driverController.a();
-	// private final Trigger t_moveArm = m_driverController.leftBumper(); 
+	private final Trigger t_moveArm = m_driverController.leftBumper(); 
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -57,14 +57,14 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		// t_moveArm.whileTrue(new MoveArm());
+		t_moveArm.whileTrue(new MoveArm());
 		t_scanObjectDistance.whileTrue(new InstantCommand(() -> {
 			System.out.println("Object Distance: " + m_xrpUltrasound.getDistance());
 		}));
 	}
 
 	public void controlBot() {
-		m_xrpDrivetrain.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getRightX());
+		m_xrpDrivetrain.arcadeDrive(-m_driverController.getRawAxis(1), -m_driverController.getRawAxis(4));
 	}
 
 	/**

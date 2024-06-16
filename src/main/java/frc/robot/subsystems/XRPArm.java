@@ -18,6 +18,8 @@ public class XRPArm extends SubsystemBase {
 	}
 
 	public void setArmPosition(double position) {
+		if (m_armStatus == ArmStatus.MOVING) return;
+
 		position = Math.max(0.0, Math.min(1.0, position));
 		m_arm.setPosition(position);
 
